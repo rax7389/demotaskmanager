@@ -1,0 +1,50 @@
+UI task
+
+Login Lib
+  signup page   same componet
+  login page    same componet
+
+Task Lib
+  after login main page:-
+    task todo list componet
+    create/update task/subtask component
+    compare option dialog/on same page  component
+
+setting component :-
+  options:-
+  theme:- entire application theme change and save user wise
+
+
+
+Backend task:-
+
+  SignUP apis userTable entry
+  signIn apis useTable verification token-based and keycloak
+  get task list and subtask list userwise apis
+  create and delete task userwise apis
+  create,update and delete subtask task and userwise apis
+  theme userwise apis
+
+
+
+DB task
+
+  Table
+
+  Table name:- User
+    schemas:-
+            user_id_pk        primarykey not null unique
+            user_email        varchar 100
+            user_password     varchar 100
+            theme             varchar 10
+  Table name:- Task
+    schemas:-
+            task_id_pk        primarykey not null unique
+            task_name         varchar 1000
+            user_id_fk        foreign key
+  Table name:- SubTask
+    schemas:-
+            sub_task_id_pk    primarykey not null unique
+            sub_task_name     varchar 1000
+            task_id_fk        foreign key
+            user_id_fk        foreign key

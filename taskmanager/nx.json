@@ -1,0 +1,23 @@
+{
+  "npmScope": "taskmanager",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*",
+    "tsconfig.base.json": "*"
+  },
+  "projects": {
+    "taskmanager": {
+      "tags": []
+    },
+    "undefined-e2e": {
+      "tags": []
+    }
+  },
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json"
+}

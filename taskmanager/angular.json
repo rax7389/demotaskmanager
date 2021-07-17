@@ -3,6 +3,56 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "restfulapis": {
+      "root": "apps/restfulapis",
+      "sourceRoot": "apps/restfulapis/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/restfulapis",
+            "main": "apps/restfulapis/src/main.ts",
+            "tsConfig": "apps/restfulapis/tsconfig.app.json",
+            "assets": ["apps/restfulapis/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/restfulapis/src/environments/environment.ts",
+                  "with": "apps/restfulapis/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "restfulapis:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/restfulapis/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/restfulapis"],
+          "options": {
+            "jestConfig": "apps/restfulapis/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "taskmanager": {
       "projectType": "application",
       "schematics": {
@@ -30,9 +80,7 @@
               "apps/taskmanager/src/favicon.ico",
               "apps/taskmanager/src/assets"
             ],
-            "styles": [
-              "apps/taskmanager/src/styles.scss"
-            ],
+            "styles": ["apps/taskmanager/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -78,7 +126,10 @@
               "browserTarget": "taskmanager:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/taskmanager/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -98,9 +149,7 @@
               "apps/taskmanager/src/favicon.ico",
               "apps/taskmanager/src/assets"
             ],
-            "styles": [
-              "apps/taskmanager/src/styles.scss"
-            ],
+            "styles": ["apps/taskmanager/src/styles.scss"],
             "scripts": []
           }
         }

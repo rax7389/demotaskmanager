@@ -12,6 +12,9 @@
     "tsconfig.base.json": "*"
   },
   "projects": {
+    "restfulapis": {
+      "tags": []
+    },
     "taskmanager": {
       "tags": []
     },
@@ -19,5 +22,6 @@
       "tags": []
     }
   },
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json"
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "newProjectRoot": "projects"
 }

@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ['<rootDir>/apps/taskmanager'],
+  projects: ['<rootDir>/apps/taskmanager', '<rootDir>/apps/taskmanagerapi'],
 };

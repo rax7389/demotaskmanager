@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "projects": {
+    "taskmanager": {
+      "projectType": "application",
+      "root": "apps/taskmanager",
+      "sourceRoot": "apps/taskmanager/src",
+      "prefix": "demoprojects",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/taskmanager",
+            "index": "apps/taskmanager/src/index.html",
+            "main": "apps/taskmanager/src/main.ts",
+            "polyfills": "apps/taskmanager/src/polyfills.ts",
+            "tsConfig": "apps/taskmanager/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/taskmanager/src/favicon.ico",
+              "apps/taskmanager/src/assets"
+            ],
+            "styles": ["apps/taskmanager/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/taskmanager/src/environments/environment.ts",
+                  "with": "apps/taskmanager/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "taskmanager:build:production"
+            },
+            "development": {
+              "browserTarget": "taskmanager:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "taskmanager:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/taskmanager/src/**/*.ts",
+              "apps/taskmanager/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/taskmanager"],
+          "options": {
+            "jestConfig": "apps/taskmanager/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "taskmanager-e2e": {
+      "root": "apps/taskmanager-e2e",
+      "sourceRoot": "apps/taskmanager-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/taskmanager-e2e/cypress.json",
+            "tsConfig": "apps/taskmanager-e2e/tsconfig.e2e.json",
+            "devServerTarget": "taskmanager:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "taskmanager:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/taskmanager-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "taskmanager"
+}

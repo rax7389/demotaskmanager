@@ -1,6 +1,47 @@
 {
   "version": 1,
   "projects": {
+    "login": {
+      "projectType": "library",
+      "root": "libs/login",
+      "sourceRoot": "libs/login/src",
+      "prefix": "demoprojects",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/login"],
+          "options": {
+            "project": "libs/login/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/login/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/login/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/login"],
+          "options": {
+            "jestConfig": "libs/login/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/login/src/**/*.ts",
+              "libs/login/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "taskmanager": {
       "projectType": "application",
       "root": "apps/taskmanager",

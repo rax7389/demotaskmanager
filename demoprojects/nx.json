@@ -14,7 +14,12 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "accessToken": "NzU0OWE4YjMtYTk0NS00OWNlLWFhZjEtYmYzODczZGQ0ODk3fHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -30,14 +35,18 @@
     ]
   },
   "projects": {
+    "login": {
+      "tags": []
+    },
     "taskmanager": {
       "tags": []
     },
     "taskmanager-e2e": {
       "tags": [],
-      "implicitDependencies": ["taskmanager"]
-    },
-    "taskmanagerapi": {
+      "implicitDependencies": [
+        "taskmanager"
+      ]
+    },"taskmanagerapi": {
       "tags": []
     }
   }

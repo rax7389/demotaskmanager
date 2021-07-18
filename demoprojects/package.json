@@ -42,9 +42,9 @@
     "@ngx-formly/bootstrap": "^5.10.22",
     "@ngx-formly/core": "^5.10.22",
     "@nrwl/angular": "12.5.8",
+    "body-parser": "^1.19.0",
     "express": "4.17.1",
-    "express-generator": "^4.16.1",
-    "generator-express-component": "0.0.4",
+    "mysql": "^2.18.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

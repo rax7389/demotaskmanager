@@ -16,6 +16,20 @@ SubTask.findAll = function (result) {
   });
 };
 
+SubTask.create = function (newEmp, result) {
+dbConn.query("INSERT INTO subtask set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res);
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+
 //Employee object create
 // export const Employee = function(employee){
 //   this.first_name     = employee.first_name;

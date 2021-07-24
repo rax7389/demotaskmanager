@@ -10,6 +10,8 @@ import {taskRouter}  from './app/task/routes/task.routes';
 import {userRouter}  from './app/user/routes/user.routes';
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 userRouter(app);
 

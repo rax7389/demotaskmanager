@@ -18,7 +18,7 @@ setting component :-
 
 Backend task:-
 
-  SignUP apis userTable entry
+  SignUP apis userTable entry and check if email already exist (done)
   signIn apis useTable verification token-based and keycloak
   get task list and subtask list userwise apis
   create and delete task userwise apis

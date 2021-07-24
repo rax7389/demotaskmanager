@@ -1,10 +1,25 @@
 import {SubTask}  from '../models/subtasks.model';
+
 export function findAll(req, res) {
   SubTask.findAll(function(err, subtasks) {
     if (err)
       res.send(err);
     res.send(subtasks);
   });
+}
+
+export function create(req, res) {
+  const subtask = new SubTask(req.body);
+//handles null error
+if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+  res.status(400).send({ error:true, message: 'Please provide all required field' });
+}else{
+  SubTask.create(subtask, function(err, subtask) {
+  if (err)
+  res.send(err);
+  res.json({error:false,message:"Task added successfully!",data:subtask});
+});
+}
 }
 
 

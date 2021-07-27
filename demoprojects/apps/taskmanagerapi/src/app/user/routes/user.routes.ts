@@ -11,10 +11,6 @@ import {
 export function userRouter(route: Express) {
   route.get('/User/findAllUser', Authentication.authenticateToken, findAll);
   route.post('/User/createUser', create);
-  route.post(
-    '/User/findByEmail',
-    Authentication.authenticateToken,
-    findByEmail
-  );
+  route.post('/User/findByEmail', findByEmail);
   route.post('/User/verifyUser', verifyUser);
 }

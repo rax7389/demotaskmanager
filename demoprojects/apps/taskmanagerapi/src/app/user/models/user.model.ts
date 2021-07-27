@@ -19,7 +19,7 @@ export class User {
     this.user_email = userData.email;
     this.user_password = userData.password;
     this.theme = userData?.theme || null;
-    this.user_firstname = userData.firstname;
+    this.user_firstname = userData?.firstname || null;
     this.user_lastname = userData?.lastname || null;
   }
 
@@ -29,7 +29,6 @@ export class User {
         console.log('error: ', err);
         result(null, err);
       } else {
-        console.log('user : ', res);
         result(null, res);
       }
     });
@@ -40,12 +39,11 @@ export class User {
       dbConn.query(
         'Select count(*) from user where user_email = ?',
         [newUser.user_email],
-        function (err, res) {
+        (err, res) => {
           if (err) {
-            console.log('error: ', err);
             reject(err);
           } else {
-            const count = res && res[0] && res[0]['count(*)'] || 0;
+            const count = (res && res[0] && res[0]['count(*)']) || 0;
             resolve(count > 0);
           }
         }
@@ -53,32 +51,31 @@ export class User {
     });
   };
 
-  public static create = (newUser, result) => {
-    dbConn.query('INSERT INTO user set ?', newUser, function (err, res) {
-      if (err) {
-        console.log('error: ', err);
-        result(err, null);
-      } else {
-        console.log(res);
-        console.log(res.insertId);
-        result(null, res.insertId);
-      }
+  public static create = (newUser) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query('INSERT INTO user set ?', newUser, (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.insertId);
+        }
+      });
     });
   };
 
-  public static verifyUser = (newUser, result) => {
-    dbConn.query(
-      'Select * from user where user_email = ?',
-      [newUser.user_email],
-      function (err, res) {
-        if (err) {
-          console.log('error: ', err);
-          result(err, null);
-        } else {
-          console.log(res);
-          result(null, res);
+  public static verifyUser = (newUser) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query(
+        'Select * from user where user_email = ?',
+        [newUser.user_email],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
         }
-      }
-    );
+      );
+    });
   };
 }

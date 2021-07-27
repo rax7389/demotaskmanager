@@ -4,8 +4,6 @@ import { CustomErrorHandler } from '../middlewares/custom-error-handler.middlewa
 
 export class Authentication {
   public static authenticateToken(req, res, next) {
-    // const authHeader = req.headers['authorization'];
-    // const token = authHeader && authHeader.split(' ')[1];
     const token = Authentication.getTokenFromHeader(req);
     if (token == null)
       return next(CustomErrorHandler.customErrrMsg(401, 'Unauthorized'));

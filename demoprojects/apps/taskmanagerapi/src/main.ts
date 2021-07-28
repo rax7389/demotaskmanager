@@ -9,7 +9,8 @@ import * as morgan from 'morgan';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { TOKEN_SECRET } from './global';
+
+
 import { subTaskRouter } from './app/subtasks/routes/subtasks.routes';
 import { taskRouter } from './app/task/routes/task.routes';
 import { userRouter } from './app/user/routes/user.routes';
@@ -40,9 +41,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 userRouter(app);
-
 taskRouter(app);
-
 subTaskRouter(app);
 
 app.use(CustomErrorHandler.notFound);

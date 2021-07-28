@@ -4,6 +4,7 @@ import { map, isEmpty } from 'lodash';
 import * as bcrypt from 'bcrypt';
 import { Authentication } from '../../middlewares/authentication.middleware';
 import { CustomErrorHandler } from '../../middlewares/custom-error-handler.middleware';
+import { validationResult } from 'express-validator';
 
 export function findAll(req, res, next) {
   User.findAll((err, user) => {
@@ -18,7 +19,11 @@ export function findAll(req, res, next) {
 }
 
 export async function create(req, res, next) {
-  if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
     next(CustomErrorHandler.badRequest('Please provide all required field'));
   } else {
     try {
@@ -45,7 +50,11 @@ export async function create(req, res, next) {
 }
 
 export async function findByEmail(req, res, next) {
-  if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
     next(CustomErrorHandler.badRequest('Please provide all required field'));
   } else {
     try {
@@ -66,7 +75,11 @@ export async function findByEmail(req, res, next) {
 }
 
 export async function verifyUser(req, res, next) {
-  if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
     next(CustomErrorHandler.badRequest('Please provide all required field'));
   } else {
     try {

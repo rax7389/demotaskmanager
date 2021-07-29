@@ -9,7 +9,7 @@ export class ErrorLogger {
 
   public static errorLogger(error) {
     const now = new Date();
-    const log = `${now.toISOString()} ${error}\r\n`;
+    const log = `${now.toISOString()} errorMsg$${error.message}  stackTrack$${error.stack}\r\n`;
     ErrorLogger.writer.write(log);
   }
 }

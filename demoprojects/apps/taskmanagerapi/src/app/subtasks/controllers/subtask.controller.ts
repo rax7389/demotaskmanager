@@ -1,76 +1,152 @@
-import {SubTask}  from '../models/subtasks.model';
+import { SubTaskWrapper } from '../../wrappers/sub-task-wrapper.model';
+import { SubTask } from '../models/subtasks.model';
+import { map, isEmpty } from 'lodash';
+import { CustomErrorHandler } from '../../middlewares/custom-error-handler.middleware';
+import { Authentication } from '../../middlewares/authentication.middleware';
+import { validationResult } from 'express-validator';
 
-export function findAll(req, res) {
-  SubTask.findAll(function(err, subtasks) {
-    if (err)
-      res.send(err);
-    res.send(subtasks);
-  });
+export async function findAll(req, res, next) {
+  try {
+    const subtasks = await SubTask.findAll();
+    const wrapper = map(subtasks, (item) => {
+      return new SubTaskWrapper(
+        item.sub_task_id_pk,
+        item.sub_task_name,
+        item.task_id_fk
+      );
+    });
+    res.status(200).send({ result: wrapper });
+  } catch (error) {
+    next(CustomErrorHandler.customErrrMsg(500, 'Something went Wrong'), error);
+  }
 }
 
-export function create(req, res) {
-  const subtask = new SubTask(req.body);
-//handles null error
-if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-  res.status(400).send({ error:true, message: 'Please provide all required field' });
-}else{
-  SubTask.create(subtask, function(err, subtask) {
-  if (err)
-  res.send(err);
-  res.json({error:false,message:"Task added successfully!",data:subtask});
-});
+export async function findSubTaskByTask(req, res, next) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
+    next(CustomErrorHandler.badRequest('Please provide all required field'));
+  } else {
+    try {
+      const userId = Authentication.getUserDetailFromToken(req, 'user_id_pk');
+      const subTask = new SubTask(req.body.taskId, userId);
+      const data = await SubTask.findSubTaskByTask(subTask);
+      const wrapper = map(data, (item) => {
+        return new SubTaskWrapper(
+          item.sub_task_id_pk,
+          item.sub_task_name,
+          item.task_id_fk
+        );
+      });
+      res.status(200).send({ result: wrapper });
+    } catch (error) {
+      next(
+        CustomErrorHandler.customErrrMsg(500, 'Something went Wrong'),
+        error
+      );
+    }
+  }
 }
+
+export async function create(req, res, next) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
+    next(CustomErrorHandler.badRequest('Please provide all required field'));
+  } else {
+    try {
+      const subtask = new SubTask(
+        req.body.subTaskName,
+        req.body.taskId,
+        Authentication.getUserDetailFromToken(req, 'user_id_pk')
+      );
+      const subTaskId = await SubTask.create(subtask);
+      if (subTaskId) {
+        res.json({
+          result: 'SubTask created successfully!',
+        });
+      } else {
+        res.json({
+          result: 'failure',
+        });
+      }
+    } catch (error) {
+      next(
+        CustomErrorHandler.customErrrMsg(500, 'Something went Wrong'),
+        error
+      );
+    }
+  }
 }
 
+export async function deleteSubtask(req, res, next) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
+    next(CustomErrorHandler.badRequest('Please provide all required field'));
+  } else {
+    try {
+      const subtask = new SubTask(
+        null,
+        req.body.taskId,
+        Authentication.getUserDetailFromToken(req, 'user_id_pk'),
+        req.body.subtaskId
+      );
+      const subTaskDeleted = await SubTask.delete(subtask);
+      if (subTaskDeleted) {
+        res.json({
+          result: 'SubTask deleted successfully!',
+        });
+      } else {
+        res.json({
+          result: 'failure',
+        });
+      }
+    } catch (error) {
+      next(
+        CustomErrorHandler.customErrrMsg(500, 'Something went Wrong'),
+        error
+      );
+    }
+  }
+}
 
-// use strict';
-// const Employee = require('../models/employee.model');
-// exports.findAll = function(req, res) {
-// Employee.findAll(function(err, employee) {
-//   console.log('controller')
-//   if (err)
-//   res.send(err);
-//   console.log('res', employee);
-//   res.send(employee);
-// });
-// };
-// exports.create = function(req, res) {
-// const new_employee = new Employee(req.body);
-// //handles null error
-// if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-//   res.status(400).send({ error:true, message: 'Please provide all required field' });
-// }else{
-// Employee.create(new_employee, function(err, employee) {
-//   if (err)
-//   res.send(err);
-//   res.json({error:false,message:"Employee added successfully!",data:employee});
-// });
-// }
-// };
-// exports.findById = function(req, res) {
-// Employee.findById(req.params.id, function(err, employee) {
-//   if (err)
-//   res.send(err);
-//   res.json(employee);
-// });
-// };
-// exports.update = function(req, res) {
-//   if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-//     res.status(400).send({ error:true, message: 'Please provide all required field' });
-//   }else{
-//     Employee.update(req.params.id, new Employee(req.body), function(err, employee) {
-//    if (err)
-//    res.send(err);
-//    res.json({ error:false, message: 'Employee successfully updated' });
-// });
-// }
-// };
-// exports.delete = function(req, res) {
-// Employee.delete( req.params.id, function(err, employee) {
-//   if (err)
-//   res.send(err);
-//   res.json({ error:false, message: 'Employee successfully deleted' });
-// });
-// };
-
-
+export async function updateSubtask(req, res, next) {
+  const errors = validationResult(req);
+  if (
+    (req.body.constructor === Object && Object.keys(req.body).length === 0) ||
+    !errors.isEmpty()
+  ) {
+    next(CustomErrorHandler.badRequest('Please provide all required field'));
+  } else {
+    try {
+      const subtask = new SubTask(
+        req.body.subTaskName,
+        null,
+        null,
+        req.body.subtaskId
+      );
+      const subTaskUpdated = await SubTask.update(subtask);
+      if (subTaskUpdated) {
+        res.json({
+          result: 'SubTask Updated successfully!',
+        });
+      } else {
+        res.json({
+          result: 'failure',
+        });
+      }
+    } catch (error) {
+      next(
+        CustomErrorHandler.customErrrMsg(500, 'Something went Wrong'),
+        error
+      );
+    }
+  }
+}

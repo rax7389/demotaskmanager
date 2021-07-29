@@ -1,106 +1,96 @@
-import {dbConn}  from '../../../config/db.config';
-export const SubTask = function(subtask){
-  this.sub_task_name     = subtask.sub_task_name;
-};
+import { dbConn } from '../../../config/db.config';
 
-SubTask.findAll = function (result) {
-  dbConn.query("Select * from subtask", function (err, res) {
-    if(err) {
-      console.log("error: ", err);
-      result(null, err);
-    }
-    else{
-      console.log('employees : ', res);
-      result(null, res);
-    }
-  });
-};
-
-SubTask.create = function (newEmp, result) {
-dbConn.query("INSERT INTO subtask set ?", newEmp, function (err, res) {
-if(err) {
-  console.log("error: ", err);
-  result(err, null);
+interface SubTaskData {
+  subTaskName: string;
+  taskId: number;
+  userId: number;
 }
-else{
-  console.log(res);
-  console.log(res.insertId);
-  result(null, res.insertId);
+
+export class SubTask {
+  private sub_task_name: string;
+  private task_id_fk: number;
+  private user_id_fk: number;
+  private sub_task_id_pk: number;
+
+  constructor(taskId, userId);
+  constructor(subTaskName, taskId, userId);
+  constructor(subTaskName, taskId, userId, subtaskId);
+  constructor(subTaskName?, taskId?, userId?, subtaskId?) {
+    this.sub_task_name = subTaskName || null;
+    this.task_id_fk = taskId || null;
+    this.user_id_fk = userId || null;
+    this.sub_task_id_pk = subtaskId || null;
+  }
+
+  public static findAll = () => {
+    return new Promise((resolve, reject) => {
+      dbConn.query('Select * from subtask', (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  };
+
+  public static findSubTaskByTask = (subTask) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query(
+        'Select * from subtask where task_id_fk = ? and user_id_fk = ? ',
+        [subTask.task_id_fk, subTask.user_id_fk],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  };
+
+  public static create = (subTask) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query('INSERT INTO subtask set ?', subTask, (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.insertId);
+        }
+      });
+    });
+  };
+
+  public static delete = (subTask) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query(
+        'DELETE FROM subtask WHERE sub_task_id_pk = ? and task_id_fk = ? and user_id_fk = ?',
+        [subTask.sub_task_id_pk, subTask.task_id_fk, subTask.user_id_fk],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res?.affectedRows > 0);
+          }
+        }
+      );
+    });
+  };
+
+  public static update = (subTask) => {
+    return new Promise((resolve, reject) => {
+      dbConn.query(
+        'UPDATE subtask SET sub_task_name = ? WHERE sub_task_id_pk = ?',
+        [subTask.sub_task_name, subTask.sub_task_id_pk],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res?.affectedRows > 0 && res?.changedRows > 0);
+          }
+        }
+      );
+    });
+  };
 }
-});
-};
-
-//Employee object create
-// export const Employee = function(employee){
-//   this.first_name     = employee.first_name;
-//   this.last_name      = employee.last_name;
-//   this.email          = employee.email;
-//   this.phone          = employee.phone;
-//   this.organization   = employee.organization;
-//   this.designation    = employee.designation;
-//   this.salary         = employee.salary;
-//   this.status         = employee.status ? employee.status : 1;
-//   this.created_at     = new Date();
-//   this.updated_at     = new Date();
-// };
-
-
-// Employee.create = function (newEmp, result) {
-// dbConn.query("INSERT INTO employees set ?", newEmp, function (err, res) {
-// if(err) {
-//   console.log("error: ", err);
-//   result(err, null);
-// }
-// else{
-//   console.log(res.insertId);
-//   result(null, res.insertId);
-// }
-// });
-// };
-// Employee.findById = function (id, result) {
-// dbConn.query("Select * from employees where id = ? ", id, function (err, res) {
-// if(err) {
-//   console.log("error: ", err);
-//   result(err, null);
-// }
-// else{
-//   result(null, res);
-// }
-// });
-// };
-// Employee.findAll = function (result) {
-// dbConn.query("Select * from employees", function (err, res) {
-// if(err) {
-//   console.log("error: ", err);
-//   result(null, err);
-// }
-// else{
-//   console.log('employees : ', res);
-//   result(null, res);
-// }
-// });
-// };
-// Employee.update = function(id, employee, result){
-// dbConn.query("UPDATE employees SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [employee.first_name,employee.last_name,employee.email,employee.phone,employee.organization,employee.designation,employee.salary, id], function (err, res) {
-// if(err) {
-//   console.log("error: ", err);
-//   result(null, err);
-// }else{
-//   result(null, res);
-// }
-// });
-// };
-// Employee.delete = function(id, result){
-// dbConn.query("DELETE FROM employees WHERE id = ?", [id], function (err, res) {
-// if(err) {
-//   console.log("error: ", err);
-//   result(null, err);
-// }
-// else{
-//   result(null, res);
-// }
-// });
-// };
-// module.exports= Employee;
-
-

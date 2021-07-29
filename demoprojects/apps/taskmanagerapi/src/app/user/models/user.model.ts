@@ -15,12 +15,33 @@ export class User {
   private user_firstname: string;
   private user_lastname: string;
 
-  constructor(userData: UserData) {
-    this.user_email = userData.email;
-    this.user_password = userData.password;
-    this.theme = userData?.theme || null;
-    this.user_firstname = userData?.firstname || null;
-    this.user_lastname = userData?.lastname || null;
+  constructor(email: string);
+  constructor(email: string, password: string);
+  constructor(
+    email: string,
+    password: string,
+    firstname: string,
+    lastname: string
+  );
+  constructor(
+    email: string,
+    password: string,
+    firstname: string,
+    lastname: string,
+    theme: string
+  );
+  constructor(
+    email?: string,
+    password?: string,
+    firstname?: string,
+    lastname?: string,
+    theme?: string
+  ) {
+    this.user_email = email || null;
+    this.user_password = password || null;
+    this.theme = theme || null;
+    this.user_firstname = firstname || null;
+    this.user_lastname = lastname || null;
   }
 
   public static findAll = (result) => {

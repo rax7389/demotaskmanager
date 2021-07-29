@@ -8,11 +8,16 @@ import { validationResult } from 'express-validator';
 
 export function findAll(req, res, next) {
   User.findAll((err, user) => {
-    if (err)
-      next(CustomErrorHandler.badRequest('Please provide all required field'));
-    console.log(Authentication.getUserDetailFromToken(req, 'user_id_pk'));
+    if (err) next(CustomErrorHandler.badRequest('Something went Wrong'));
     const wrapper = map(user, (item) => {
-      return new Userwrapper(item);
+      return new Userwrapper(
+        item.user_id_pk,
+        item.user_email,
+        item.user_password,
+        item.user_firstname,
+        item.user_lastname,
+        item.user_theme
+      );
     });
     res.send({ result: wrapper });
   });
@@ -28,15 +33,24 @@ export async function create(req, res, next) {
   } else {
     try {
       req.body.password = await bcrypt.hash(req.body.password, 10);
-      const user = new User(req.body);
+      const user = new User(
+        req.body.email,
+        req.body.password,
+        req.body.firstname,
+        req.body.lastname
+      );
       const isAreadyExist = await User.findByEmail(user);
       if (isAreadyExist) {
-        res.status(200).send({ message: 'User already exist' });
+        res.status(200).send({ result: 'User already exist' });
       } else {
         const userId = User.create(user);
         if (userId) {
           res.json({
-            message: 'User created successfully!',
+            result: 'User created successfully!',
+          });
+        } else {
+          res.json({
+            result: 'failure',
           });
         }
       }
@@ -58,12 +72,12 @@ export async function findByEmail(req, res, next) {
     next(CustomErrorHandler.badRequest('Please provide all required field'));
   } else {
     try {
-      const user = new User(req.body);
+      const user = new User(req.body.email);
       const isAreadyExist = await User.findByEmail(user);
       if (isAreadyExist) {
-        res.status(200).send({ message: 'User already exist' });
+        res.status(200).send({ result: 'User already exist' });
       } else {
-        res.status(200).send({ message: 'No User Found with this email' });
+        res.status(200).send({ result: 'No User Found with this email' });
       }
     } catch (error) {
       next(
@@ -83,7 +97,7 @@ export async function verifyUser(req, res, next) {
     next(CustomErrorHandler.badRequest('Please provide all required field'));
   } else {
     try {
-      const user = new User(req.body);
+      const user = new User(req.body.email, req.body.password);
       const userResponse = await User.verifyUser(user);
       if (!isEmpty(userResponse) && !isEmpty(userResponse[0])) {
         const validPassword = await bcrypt.compare(
@@ -92,17 +106,17 @@ export async function verifyUser(req, res, next) {
         );
         if (validPassword) {
           res.json({
-            message: 'User logged successfully!',
+            result: 'User logged successfully!',
             token: Authentication.generateAccessToken({ ...userResponse[0] }),
           });
         } else {
           res.json({
-            message: 'Password Not Matched',
+            result: 'Password Not Matched',
           });
         }
       } else {
         res.json({
-          message: 'No User Found with this email',
+          result: 'No User Found with this email',
         });
       }
     } catch (error) {

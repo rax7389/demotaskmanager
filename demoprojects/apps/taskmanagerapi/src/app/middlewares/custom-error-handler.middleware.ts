@@ -15,7 +15,7 @@ export class CustomErrorHandler {
     res: Response,
     next: NextFunction
   ) => {
-    res.status(404).json({ message: 'Not found' });
+    res.status(404).json({ errorMsg: 'Not found' });
   };
 
   public static serverError = (
@@ -26,7 +26,7 @@ export class CustomErrorHandler {
   ) => {
     res
       .status(err.status || 500)
-      .json({ message: err.message || 'Internal Server error' });
+      .json({ errorMsg: err.message || 'Internal Server error' });
   };
 
   public static badRequest = (msg: string, error?) => {

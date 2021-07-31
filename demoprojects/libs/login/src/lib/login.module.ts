@@ -5,6 +5,7 @@ import { LoginComponent } from './component/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+import { CoreModule } from '@demoprojects/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
     ]),
     ReactiveFormsModule,
     FormlyModule.forRoot(),
-    FormlyBootstrapModule
+    FormlyBootstrapModule,
+    CoreModule
   ],
   declarations: [
     LoginComponent

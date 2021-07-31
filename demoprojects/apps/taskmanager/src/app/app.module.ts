@@ -1,11 +1,14 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { HttpAuthInterceptorInterceptor } from '@demoprojects/core';
 
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent
+  ],
   imports: [BrowserModule,RouterModule.forRoot([
     {
       path: '',
@@ -14,8 +17,8 @@ import { AppComponent } from './app.component';
           (m) => m.LoginModule
         ),
     }
-  ])],
-  providers: [],
+  ]),HttpClientModule],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptorInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

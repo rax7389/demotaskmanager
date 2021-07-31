@@ -11,7 +11,10 @@ import { isEmpty } from 'lodash';
 @Injectable()
 export class HttpAuthInterceptorInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor() {
+    console.log();
+
+  }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const access_token = sessionStorage.getItem('access_token');

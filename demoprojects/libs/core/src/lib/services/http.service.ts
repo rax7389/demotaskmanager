@@ -9,12 +9,12 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  public get(url: string,options?) {
+  public getCallTest(url: string,options?) {
     const finalOptions = {...this.getDefaultOptions, ...options}
     return this.http.get<unknown>(url,finalOptions);
   }
 
-  public post(url: string,payload,options?) {
+  public postCallTest(url: string,payload,options?) {
     const finalOptions = {...this.getDefaultOptions, ...options}
     return this.http.post<unknown>(url,payload,finalOptions);
   }

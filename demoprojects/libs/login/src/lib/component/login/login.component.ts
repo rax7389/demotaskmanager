@@ -32,7 +32,26 @@ export class LoginComponent implements OnInit {
   ];
 
   onClickMe(){
-    this.httpServeice.getCallTest('http://localhost:3333/User/findAllUser').subscribe((data:any)=> console.log(data));
+    this.httpServeice.sendGETRequest('http://localhost:3333/User//findAllUser').subscribe((data)=> console.log(data));
+  }
+
+  onClickMeAgain(){
+    const payload = {
+      email:  'testda',
+      password: 'test@required@VALID43'
+    }
+    this.httpServeice.sendPOSTRequest('http://localhost:3333/User/verifyUser', payload).subscribe((data:any)=> {
+      if(data.result === 'User logged successfully!'){
+        sessionStorage.setItem('access_token', data.token);
+      }
+    });
+  }
+
+  onClickMeAgainAgain(){
+
+    this.httpServeice.sendGETRequest('http://localhost:3333/SubTask/findAllSubTask').subscribe((data:any)=> {
+      console.log(data);
+    });
   }
 
 

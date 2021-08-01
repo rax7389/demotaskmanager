@@ -1,16 +1,16 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
-export enum Observe  {
-  BODY='body',
-  EVENTS='events' ,
-  RESPONSE='response',
+export enum Observe {
+  BODY = 'body',
+  EVENTS = 'events',
+  RESPONSE = 'response',
 }
 
-export enum ResponseType  {
-  ARRAY_BUFFER='arraybuffer',
-  BLOB='blob' ,
-  JSON='json',
-  TEXT='text',
+export enum ResponseType {
+  ARRAY_BUFFER = 'arraybuffer',
+  BLOB = 'blob',
+  JSON = 'json',
+  TEXT = 'text',
 }
 
 export interface Http {
@@ -28,4 +28,9 @@ export interface Http {
   reportProgress?: boolean;
   responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
   withCredentials?: boolean;
+}
+
+export interface CustomHttpResponse {
+  result?: string | Array<any>;
+  errorMsg?: string;
 }

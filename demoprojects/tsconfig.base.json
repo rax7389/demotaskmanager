@@ -14,6 +14,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "noImplicitAny": false,
     "paths": {
       "@demoprojects/core": ["libs/core/src/index.ts"],
       "@demoprojects/login": ["libs/login/src/index.ts"]

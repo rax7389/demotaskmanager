@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Http, Observe, ResponseType } from '../interface/http';
 
@@ -20,7 +20,7 @@ export class HttpService {
 
   private getDefaultOptions(): Http {
     return {
-      headers: new Headers({
+      headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       observe: Observe.BODY,

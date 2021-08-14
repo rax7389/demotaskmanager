@@ -1,7 +1,11 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
+<div fxLayout="column" >
+  <span>test</span>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
 
 
 <button type="submit" (click)="onClickMe()" class="btn btn-default">GET</button>

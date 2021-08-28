@@ -4,41 +4,46 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse,
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { isEmpty } from 'lodash';
-import { catchError, retry, tap } from 'rxjs/operators';
+import { catchError, first, mergeMap, retry, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class HttpAuthInterceptorInterceptor implements HttpInterceptor {
-  constructor() {
-    console.log();
-  }
+  constructor(private store: Store<any>) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const access_token = sessionStorage.getItem('access_token');
+    return this.store.select('authToken').pipe(
+      first(),
+      mergeMap((authToken) => {
+        return this.ngrxAuthStoreHandler(request, next, authToken);
+      })
+    );
+  }
+
+  private ngrxAuthStoreHandler(
+    request,
+    next,
+    authToken
+  ): Observable<HttpEvent<unknown>> {
     let modifedHeaders = request;
-    if (!isEmpty(access_token)) {
+    if (!isEmpty(authToken) && !isEmpty(authToken[0])) {
       modifedHeaders = request.clone({
         headers: request.headers.set(
           'Authorization',
-          'Bearer ' + sessionStorage.getItem('access_token')
+          'Bearer ' + authToken.toString()
         ),
       });
     }
     return next.handle(modifedHeaders).pipe(
       tap((event) => {
         console.log(event);
-        if (event instanceof HttpResponse) {
-          if (event.status === 401) {
-            console.log(event.statusText);
-          }
-        }
       }),
       retry(3),
       catchError(this.handleError)

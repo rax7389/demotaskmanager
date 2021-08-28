@@ -18,7 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormlyModule.forRoot(),
     FormlyBootstrapModule,
     CoreModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   declarations: [
     LoginComponent

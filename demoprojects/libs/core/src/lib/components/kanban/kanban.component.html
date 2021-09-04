@@ -1,22 +1,33 @@
-  <div class="kanban">
-    <div class="kanban-wrapper">
-      <div class="kanban-columns" cdkDropListGroup>
-        <div class="kanban-column" *ngFor="let column of kanbanColumns">
-          <div class="column-title">
-            {{ column.name }}
-          </div>
-
-          <div
-            class="items-container"
-            cdkDropList
-            [cdkDropListData]="column.items"
-            (cdkDropListDropped)="dropKanban($event)"
-          >
-            <div class="item" *ngFor="let item of column.items" cdkDrag>
-              {{ item }}
-            </div>
-          </div>
-        </div>
+<div class="kanban">
+  <div class="kanban-wrapper">
+    <div class="kanban-columns">
+      <div class="kanban-column" *ngFor="let column of kanbanColumns">
+        <ng-container
+          [ngTemplateOutlet]="column.templateRef"
+          [ngTemplateOutletContext]="{ item: column }"
+        ></ng-container>
       </div>
     </div>
   </div>
+</div>
+
+<ng-template cdkDropListGroup #defaultTemplateRef let-column="item">
+  <div class="default-template-column-title">
+    {{ column.name }}
+  </div>
+
+  <div
+    class="default-template-items-container"
+    cdkDropList
+    [cdkDropListData]="column.items"
+    (cdkDropListDropped)="dropKanban($event)"
+  >
+    <div
+      class="default-template-item"
+      *ngFor="let item of column.items"
+      cdkDrag
+    >
+      {{ item }}
+    </div>
+  </div>
+</ng-template>

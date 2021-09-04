@@ -1,19 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { KanbanColumns } from './model/kanban-columns.model';
-
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-kanban',
   templateUrl: './kanban.component.html',
   styleUrls: ['./kanban.component.scss'],
 })
-export class KanbanComponent implements OnInit {
+export class KanbanComponent implements OnInit, AfterViewInit {
   constructor() {}
+
+  @ViewChild('defaultTemplateRef', { read: TemplateRef }) defaultTemplateRef;
 
   @Input() kanbanColumns: Array<KanbanColumns> = [
     new KanbanColumns('Ideas', [
@@ -49,8 +58,16 @@ export class KanbanComponent implements OnInit {
   ];
 
   ngOnInit() {}
+  ngAfterViewInit() {
+    this.kanbanColumns = this.kanbanColumns.map((column) => {
+      if (isEmpty(column.templateRef)) {
+        column.templateRef = this.defaultTemplateRef;
+      }
+      return column;
+    });
+  }
 
-  dropKanban(event:any) {
+  dropKanban(event: any) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

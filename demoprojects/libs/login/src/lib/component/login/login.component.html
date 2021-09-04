@@ -1,13 +1,22 @@
-<div fxLayout="column" >
-  <span>test</span>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
-</div>
+<mat-card
+    class="simple-card"
+    [class.simple-card-box-shadow]="boxShadow"
+    [style.padding]="padding">
+  <mat-card-content>
+    <div fxLayout="column" >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <formly-form fxLayoutGap='5' [form]="form" [fields]="fields" [model]="model"></formly-form>
+        <div fxFlex fxLayoutAlign="flex-end center">
+          <button mat-raised-button color="primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
 
 
 
-<button type="submit" (click)="onClickMe()" class="btn btn-default">GET</button>
+
+<!-- <button type="submit" (click)="onClickMe()" class="btn btn-default">GET</button>
 <button type="submit" (click)="onClickMeAgain()" class="btn btn-default">POST</button>
-<button type="submit" (click)="onClickMeAgainAgain()" class="btn btn-default">GET</button>
+<button type="submit" (click)="onClickMeAgainAgain()" class="btn btn-default">GET</button> -->

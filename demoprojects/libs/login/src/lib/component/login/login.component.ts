@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { HttpService ,AuthenticationState,AuthenticationAction, CoreGlobal} from '@demoprojects/core';
+import { HttpService ,AuthenticationState,AuthenticationAction, CoreGlobal, ToastService} from '@demoprojects/core';
 import { Store } from '@ngrx/store';
-
 @Component({
   selector: 'demoprojects-login',
   templateUrl: './login.component.html',
@@ -12,11 +11,14 @@ import { Store } from '@ngrx/store';
 export class LoginComponent implements OnInit {
   constructor(
     private httpServeice: HttpService,
+    private toastService: ToastService,
     private store: Store<AuthenticationState>
   ) {}
+  boxShadow = true;
+  padding = '1.5em';
 
   form = new FormGroup({});
-  model = { email: 'email@gmail.com' };
+  model: any = {};
   fields: FormlyFieldConfig[] = [
     {
       key: 'email',
@@ -26,8 +28,34 @@ export class LoginComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
-    },
+      asyncValidators: {
+        uniqueUsername: {
+          expression: (control: FormControl) => {
+            this.checkUsername(control);
+          },
+          message: 'This username is already taken.',
+        },
+      },
+    },{
+      key: 'password',
+      type: 'input',
+      templateOptions: {
+        label: 'password',
+        placeholder: 'Enter password',
+        required: true,
+      }
+    }
   ];
+  checkUsername(control) {
+    if(control.value) {
+      const payload = {
+        email : control.value
+      }
+      this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).subscribe((data)=> {
+        return data;
+      });
+    }
+  }
 
   onClickMe() {
     this.httpServeice
@@ -63,7 +91,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.model);
+    this.toastService.success('test');
     this.store.dispatch(
       new AuthenticationAction().logout(CoreGlobal.LOGOUT, 0)
     );

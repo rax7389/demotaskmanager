@@ -1,0 +1,85 @@
+.icomoon {
+  font-size: 1.846em;
+}
+.snack-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding: 1.231em;
+  &-icon {
+    i {
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      &:hover {
+        background-color: #f7f7f730;
+      }
+    }
+  }
+  &-message {
+    // margin-left: em(10);
+    display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+    &-icon {
+      margin-right: em(12);
+    }
+    &-close-icon {
+      margin-left: em(12);
+    }
+    &-text {
+      font-size: em(16);
+      vertical-align: super;
+      word-break: break-word;
+    }
+  }
+}
+
+
+.box-success {
+  padding: 1.231em;
+  color: white;
+  background-color: #ebf7ec;
+  border-color: #ebf7ec;
+  border-radius: 2px !important;
+  text-align: center;
+  display: flex !important;
+  border: 2px solid #047205;
+}
+.box-error {
+  padding: 1.231em;
+  color: white;
+  background-color: #fff0f0;
+  border-color: #fff0f0;
+  border-radius: 2px !important;
+  text-align: center;
+  display: flex !important;
+  border: 2px solid #df0101;
+}
+.box-warn {
+  padding: 1.231em;
+  color: white;
+  background-color: #fef0dd;
+  border-color: #fef0dd;
+  border-radius: 2px !important;
+  text-align: center;
+  display: flex !important;
+  border: 2px solid #a35e04;
+}
+.box-info {
+  padding: 1.231em;
+  color: white;
+  background-color: #ebf7ec;
+  border-color: #ebf7ec;
+  border-radius: 2px !important;
+  text-align: center;
+  display: flex !important;
+  border: 2px solid #006497;
+}
+::ng-deep .mat-snack-bar-container {
+  box-shadow: none !important;
+  padding: 0;
+  min-width: em(472);
+}

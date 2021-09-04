@@ -7,7 +7,8 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { CoreModule } from '@demoprojects/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import {MatCardModule, } from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +20,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormlyBootstrapModule,
     CoreModule,
     FlexLayoutModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   declarations: [
     LoginComponent

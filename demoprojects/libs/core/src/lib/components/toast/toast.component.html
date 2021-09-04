@@ -1,0 +1,21 @@
+<div class="snack-container box-{{ IconName?.type }}">
+  <div class="snack-container-message">
+    <div>
+      <mat-icon
+        class="snack-container-message-icon"
+        [color]="'accent'"
+        [fontSet]="'icomoon'"
+        [fontIcon]="IconName?.icon || 'check'"
+      ></mat-icon>
+    </div>
+  </div>
+  <div class="snack-container-icon">
+    <mat-icon
+      class="snack-container-message-icon"
+      (click)="closeSnackbar()"
+      [color]="'accent'"
+      [fontSet]="'icomoon'"
+      [fontIcon]="'close'"
+    ></mat-icon>
+  </div>
+</div>

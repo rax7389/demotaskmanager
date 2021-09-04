@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .mat-card-content {
+    font-size: 1.289em;
+  }
+}
+.simple-card {
+  box-shadow: none;
+
+  &-box-shadow {
+    box-shadow: 0 0 0.9em rgba(0, 0, 0, 0.1);
+  }
+}

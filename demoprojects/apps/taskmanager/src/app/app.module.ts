@@ -1,8 +1,8 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { AuthenticationReducer, GLOBAL_INTERCEPTOR } from '@demoprojects/core';
+import { AuthenticationReducer, GLOBAL_INTERCEPTOR,CoreModule } from '@demoprojects/core';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 
@@ -21,7 +21,8 @@ import { AppComponent } from './app.component';
 
     StoreModule.forRoot({
       authToken:AuthenticationReducer.reducer
-    })
+    }),
+    CoreModule
   ],
   providers: [...GLOBAL_INTERCEPTOR],
   bootstrap: [AppComponent],

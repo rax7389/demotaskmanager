@@ -1,4 +1,4 @@
 export class CoreGlobal {
-  static LOGIN = '[Authentication] Login';
-  static LOGOUT = '[Authentication] Logout';
+  static readonly LOGIN = '[Authentication] Login';
+  static readonly LOGOUT = '[Authentication] Logout';
 }

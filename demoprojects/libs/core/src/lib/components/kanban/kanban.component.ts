@@ -50,7 +50,7 @@ export class KanbanComponent implements OnInit {
 
   ngOnInit() {}
 
-  dropKanban(event: CdkDragDrop<string[]>) {
+  dropKanban(event:any) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

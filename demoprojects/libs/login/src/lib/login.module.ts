@@ -9,6 +9,7 @@ import { CoreModule } from '@demoprojects/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatCardModule, } from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   imports: [
     CommonModule,

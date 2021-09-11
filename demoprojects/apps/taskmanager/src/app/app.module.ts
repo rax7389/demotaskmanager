@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AuthenticationReducer, GLOBAL_INTERCEPTOR,CoreModule } from '@demoprojects/core';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,7 +18,7 @@ import { AppComponent } from './app.component';
       },
     ]),
     HttpClientModule,
-
+    BrowserAnimationsModule,
     StoreModule.forRoot({
       authToken:AuthenticationReducer.reducer
     }),

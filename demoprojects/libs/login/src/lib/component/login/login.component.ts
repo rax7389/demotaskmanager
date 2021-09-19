@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { HttpService ,AuthenticationState,AuthenticationAction, CoreGlobal, ToastService} from '@demoprojects/core';
 import { Store } from '@ngrx/store';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { RegistrationComponent } from '../registration/registration.component';
 @Component({
   selector: 'demoprojects-login',
   templateUrl: './login.component.html',
@@ -12,11 +14,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private httpServeice: HttpService,
     private toastService: ToastService,
+    private matDialog: MatDialog,
     private store: Store<AuthenticationState>
   ) {}
   boxShadow = true;
   padding = '1.5em';
-
+  componentForDialogs: any;
+  dialogRef: any;
   form = new FormGroup({});
   model: any = {};
   fields: FormlyFieldConfig[] = [
@@ -28,14 +32,14 @@ export class LoginComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
-      asyncValidators: {
-        uniqueUsername: {
-          expression: (control: FormControl) => {
-            this.checkUsername(control);
-          },
-          message: 'This username is already taken.',
-        },
-      },
+      // asyncValidators: {
+      //   uniqueUsername: {
+      //     expression: (control: FormControl) => {
+      //       this.checkUsername(control);
+      //     },
+      //     message: 'This username is already taken.',
+      //   },
+      // },
     },{
       key: 'password',
       type: 'input',
@@ -46,16 +50,16 @@ export class LoginComponent implements OnInit {
       }
     }
   ];
-  checkUsername(control) {
-    if(control.value) {
-      const payload = {
-        email : control.value
-      }
-      this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).subscribe((data)=> {
-        return data;
-      });
-    }
-  }
+  // checkUsername(control) {
+  //   if(control.value) {
+  //     const payload = {
+  //       email : control.value
+  //     }
+  //     this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).subscribe((data)=> {
+  //       return data;
+  //     });
+  //   }
+  // }
 
   onClickMe() {
     this.httpServeice
@@ -63,11 +67,16 @@ export class LoginComponent implements OnInit {
       .subscribe((data) => console.log(data));
   }
 
-  onClickMeAgain() {
+  onClickMeAgain(data) {
+    // const payload = {
+    //   email: 'testda',
+    //   password: 'test@required@VALID43',
+    // };
     const payload = {
-      email: 'testda',
-      password: 'test@required@VALID43',
+      email: data.email,
+      password: data.password,
     };
+    console.log(data);
     this.httpServeice
       .sendPOSTRequest('http://localhost:3333/User/verifyUser', payload)
       .subscribe((data: any) => {
@@ -78,6 +87,8 @@ export class LoginComponent implements OnInit {
           this.store.dispatch(
             new AuthenticationAction().logout(CoreGlobal.LOGIN, data.token)
           );
+        } else if (data.result === "No User Found with this email") {
+          this.toastService.error("please register first")
         }
       });
   }
@@ -91,13 +102,22 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.toastService.success('test');
     this.store.dispatch(
       new AuthenticationAction().logout(CoreGlobal.LOGOUT, 0)
     );
   }
 
+  createNew() {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = '50em';
+      dialogConfig.height = '25em';
+      dialogConfig.data = {};
+      this.matDialog.open(RegistrationComponent, dialogConfig);
+  }
+
   onSubmit() {
-    console.log(this.model);
+    this.onClickMeAgain(this.model);
   }
 }

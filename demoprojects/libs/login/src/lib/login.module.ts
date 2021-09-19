@@ -9,6 +9,8 @@ import { CoreModule } from '@demoprojects/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatCardModule, } from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RegistrationComponent } from './component/registration/registration.component';
 
 @NgModule({
   imports: [
@@ -23,9 +25,11 @@ import {MatButtonModule} from '@angular/material/button';
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule
   ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
 })
 export class LoginModule {}

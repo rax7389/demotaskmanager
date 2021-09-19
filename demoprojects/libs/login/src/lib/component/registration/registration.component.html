@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Registration</h2>
+
+<mat-dialog-content>
+
+  <div fxLayout="column" >
+    <form [formGroup]="form">
+      <formly-form fxLayoutGap='5' [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <!-- <div fxFlex fxLayoutAlign="flex-end center">
+        <button mat-raised-button color="primary" (click)="createNew()">Create new Profile</button>
+      </div> -->
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
+    <button mat-raised-button color="primary" (click)="createNew()">Create new Profile</button>
+    <button class="mat-raised-button" (click)="close()">Close</button>
+  </div>
+</mat-dialog-actions>

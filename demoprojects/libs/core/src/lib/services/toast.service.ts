@@ -50,7 +50,8 @@ export class ToastService {
       this.snackBar.openFromComponent(ToastComponent, {
         duration: 5*1000,
         data: {
-          message: message
+          message: message,
+          snackType: _snackType,
         },
       });
   }

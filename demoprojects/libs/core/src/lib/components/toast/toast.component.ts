@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+  import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_SNACK_BAR_DATA} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.scss']
+  styleUrls: ['./toast.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastComponent implements OnInit {
 
@@ -13,7 +14,7 @@ export class ToastComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    const element: any = document.getElementsByClassName('snackbar-hyperlink');
+    const element: any = document.getElementsByClassName('text-link');
     if (element && element.length > 0) {
       for (let i = 0; i < element.length; i++) {
         element[i].addEventListener('click', () => {

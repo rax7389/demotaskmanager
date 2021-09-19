@@ -40,8 +40,8 @@
 
 .box-success {
   padding: 1.231em;
-  color: white;
-  background-color: #ebf7ec;
+  color: darkgreen;
+  background-color: #ebf7ec !important;
   border-color: #ebf7ec;
   border-radius: 2px !important;
   text-align: center;
@@ -50,8 +50,8 @@
 }
 .box-error {
   padding: 1.231em;
-  color: white;
-  background-color: #fff0f0;
+  color: red;
+  background-color: #fff0f0 !important;
   border-color: #fff0f0;
   border-radius: 2px !important;
   text-align: center;
@@ -60,8 +60,8 @@
 }
 .box-warn {
   padding: 1.231em;
-  color: white;
-  background-color: #fef0dd;
+  color: darkorange;
+  background-color: #fef0dd !important;
   border-color: #fef0dd;
   border-radius: 2px !important;
   text-align: center;

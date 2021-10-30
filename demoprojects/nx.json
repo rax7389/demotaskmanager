@@ -30,6 +30,9 @@
     ]
   },
   "projects": {
+    "after-login": {
+      "tags": []
+    },
     "core": {
       "tags": []
     },

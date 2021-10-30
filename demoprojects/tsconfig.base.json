@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "noImplicitAny": false,
     "paths": {
+      "@demoprojects/after-login": ["libs/after-login/src/index.ts"],
       "@demoprojects/core": ["libs/core/src/index.ts"],
       "@demoprojects/login": ["libs/login/src/index.ts"]
     }

@@ -4,5 +4,6 @@ module.exports = {
     '<rootDir>/libs/login',
     '<rootDir>/apps/taskmanagerapi',
     '<rootDir>/libs/core',
+    '<rootDir>/libs/after-login',
   ],
 };

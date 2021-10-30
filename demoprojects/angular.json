@@ -1,6 +1,31 @@
 {
   "version": 1,
   "projects": {
+    "after-login": {
+      "projectType": "library",
+      "root": "libs/after-login",
+      "sourceRoot": "libs/after-login/src",
+      "prefix": "demoprojects",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/after-login"],
+          "options": {
+            "jestConfig": "libs/after-login/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/after-login/src/**/*.ts",
+              "libs/after-login/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "core": {
       "projectType": "library",
       "root": "libs/core",

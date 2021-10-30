@@ -5,6 +5,7 @@ import { HttpService ,AuthenticationState,AuthenticationAction, CoreGlobal, Toas
 import { Store } from '@ngrx/store';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RegistrationComponent } from '../registration/registration.component';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 @Component({
   selector: 'demoprojects-login',
   templateUrl: './login.component.html',
@@ -32,14 +33,14 @@ export class LoginComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
-      // asyncValidators: {
-      //   uniqueUsername: {
-      //     expression: (control: FormControl) => {
-      //       this.checkUsername(control);
-      //     },
-      //     message: 'This username is already taken.',
-      //   },
-      // },
+      asyncValidators: {
+        uniqueUsername: {
+          expression: (control: FormControl) => {
+            return this.checkUsername(control);
+          },
+          message: 'This username is already taken.',
+        },
+      },
     },{
       key: 'password',
       type: 'input',
@@ -50,16 +51,18 @@ export class LoginComponent implements OnInit {
       }
     }
   ];
-  // checkUsername(control) {
-  //   if(control.value) {
-  //     const payload = {
-  //       email : control.value
-  //     }
-  //     this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).subscribe((data)=> {
-  //       return data;
-  //     });
-  //   }
-  // }
+  checkUsername(control) {
+    const payload = {
+      email : control?.value || ''
+    }
+    return this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).pipe(
+      distinctUntilChanged(),
+      debounceTime(1500),
+      map((data:any) => {
+          return data.result === 'No User Found with this email';
+      })
+    );
+  }
 
   onClickMe() {
     this.httpServeice

@@ -8,7 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   imports: [CommonModule, DragDropModule, FlexLayoutModule,MatIconModule, MatSnackBarModule],
-  declarations: [KanbanComponent, ToastComponent],
+  declarations: [ToastComponent, KanbanComponent],
   exports: [KanbanComponent],
 })
 export class CoreModule {}

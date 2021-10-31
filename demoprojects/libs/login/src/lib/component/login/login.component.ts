@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RegistrationComponent } from '../registration/registration.component';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'demoprojects-login',
   templateUrl: './login.component.html',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
     private httpServeice: HttpService,
     private toastService: ToastService,
     private matDialog: MatDialog,
+    private router: Router,
     private store: Store<AuthenticationState>
   ) {}
   boxShadow = true;
@@ -33,14 +35,14 @@ export class LoginComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
-      asyncValidators: {
-        uniqueUsername: {
-          expression: (control: FormControl) => {
-            return this.checkUsername(control);
-          },
-          message: 'This username is already taken.',
-        },
-      },
+      // asyncValidators: {
+      //   uniqueUsername: {
+      //     expression: (control: FormControl) => {
+      //       return this.checkUsername(control);
+      //     },
+      //     message: 'This username is already taken.',
+      //   },
+      // },
     },{
       key: 'password',
       type: 'input',
@@ -83,13 +85,11 @@ export class LoginComponent implements OnInit {
     this.httpServeice
       .sendPOSTRequest('http://localhost:3333/User/verifyUser', payload)
       .subscribe((data: any) => {
-        // if (data.result === 'User logged successfully!') {
-        //   sessionStorage.setItem('access_token', data.token);
-        // }
         if (data.result === 'User logged successfully!') {
           this.store.dispatch(
             new AuthenticationAction().logout(CoreGlobal.LOGIN, data.token)
           );
+          this.router.navigate(['/after-login']);
         } else if (data.result === "No User Found with this email") {
           this.toastService.error("please register first")
         }

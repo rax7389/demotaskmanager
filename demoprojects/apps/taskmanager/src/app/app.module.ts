@@ -17,7 +17,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
           import('@demoprojects/login').then((m) => m.LoginModule),
       },
       {
-        path: '',
+        path: 'after-login',
         loadChildren: () =>
           import('@demoprojects/after-login').then((m) => m.AfterLoginModule),
       },

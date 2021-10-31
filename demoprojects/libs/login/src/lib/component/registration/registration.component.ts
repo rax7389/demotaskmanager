@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from "@angular/material/dialog";
 import { HttpService, ToastService } from '@demoprojects/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-
+import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 @Component({
   selector: 'demoprojects-registration',
   templateUrl: './registration.component.html',
@@ -19,8 +19,14 @@ export class RegistrationComponent implements OnInit {
 
   form = new FormGroup({});
   model: any = {};
-  fields: FormlyFieldConfig[] = [
-    {
+  options: FormlyFormOptions = {};
+  fields: FormlyFieldConfig[] = [{
+    validators: {
+      validation: [
+        { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
+      ],
+    },
+    fieldGroup:[{
       key: 'firstname',
       type: 'input',
       templateOptions: {
@@ -45,18 +51,50 @@ export class RegistrationComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
+      asyncValidators: {
+          uniqueUsername: {
+            expression: (control: FormControl) => {
+              return this.checkUsername(control);
+            },
+            message: 'This username is already taken.',
+          },
+        },
     },{
       key: 'password',
       type: 'input',
       templateOptions: {
+        type: 'password',
         label: 'password',
         placeholder: 'Enter password',
         required: true,
       }
-    }
-  ];
+    },{
+      key: 'passwordConfirm',
+      type: 'input',
+      templateOptions: {
+        type: 'password',
+        label: 'Confirm Password',
+        placeholder: 'Please re-enter your password',
+        required: true,
+      },
+    },
+  ]
+}];
 
   ngOnInit(): void {
+  }
+
+  checkUsername(control) {
+    const payload = {
+      email : control?.value || ''
+    }
+    return this.httpService.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).pipe(
+      distinctUntilChanged(),
+      debounceTime(1500),
+      map((data:any) => {
+          return data.result === 'No User Found with this email';
+      })
+    );
   }
 
   createNew() {

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { HttpService ,AuthenticationState,AuthenticationAction, CoreGlobal, ToastService} from '@demoprojects/core';
 import { Store } from '@ngrx/store';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RegistrationComponent } from '../registration/registration.component';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 @Component({
   selector: 'demoprojects-login',
   templateUrl: './login.component.html',
@@ -35,36 +35,17 @@ export class LoginComponent implements OnInit {
         placeholder: 'Enter email',
         required: true,
       },
-      // asyncValidators: {
-      //   uniqueUsername: {
-      //     expression: (control: FormControl) => {
-      //       return this.checkUsername(control);
-      //     },
-      //     message: 'This username is already taken.',
-      //   },
-      // },
     },{
       key: 'password',
       type: 'input',
       templateOptions: {
         label: 'password',
+        type: 'password',
         placeholder: 'Enter password',
         required: true,
       }
     }
   ];
-  checkUsername(control) {
-    const payload = {
-      email : control?.value || ''
-    }
-    return this.httpServeice.sendPOSTRequest('http://localhost:3333/User/findByEmail', payload).pipe(
-      distinctUntilChanged(),
-      debounceTime(1500),
-      map((data:any) => {
-          return data.result === 'No User Found with this email';
-      })
-    );
-  }
 
   onClickMe() {
     this.httpServeice
@@ -77,6 +58,9 @@ export class LoginComponent implements OnInit {
     //   email: 'testda',
     //   password: 'test@required@VALID43',
     // };
+    if(!data.email && data.password) {
+      return;
+    }
     const payload = {
       email: data.email,
       password: data.password,
@@ -115,7 +99,7 @@ export class LoginComponent implements OnInit {
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
       dialogConfig.width = '50em';
-      dialogConfig.height = '25em';
+      dialogConfig.height = '30em';
       dialogConfig.data = {};
       this.matDialog.open(RegistrationComponent, dialogConfig);
   }

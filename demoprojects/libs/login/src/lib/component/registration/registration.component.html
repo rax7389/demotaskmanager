@@ -14,7 +14,7 @@
 
 <mat-dialog-actions>
   <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
-    <button mat-raised-button color="primary" (click)="createNew()">Create new Profile</button>
+    <button mat-raised-button color="primary" (click)="createNew()" [disabled]="!form.valid">Create new Profile</button>
     <button class="mat-raised-button" (click)="close()">Close</button>
   </div>
 </mat-dialog-actions>

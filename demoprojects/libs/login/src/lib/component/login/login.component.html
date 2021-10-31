@@ -7,7 +7,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <formly-form fxLayoutGap='5' [form]="form" [fields]="fields" [model]="model"></formly-form>
         <div fxFlex fxLayoutAlign="flex-end center">
-          <button mat-raised-button color="primary" type="submit">Submit</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
         </div>
         <div fxFlex fxLayoutAlign="flex-end center">
           <button mat-raised-button color="primary" (click)="createNew()">Create new Profile</button>

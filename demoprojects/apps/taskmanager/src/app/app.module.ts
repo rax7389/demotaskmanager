@@ -16,6 +16,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         loadChildren: () =>
           import('@demoprojects/login').then((m) => m.LoginModule),
       },
+      {
+        path: '',
+        loadChildren: () =>
+          import('@demoprojects/after-login').then((m) => m.AfterLoginModule),
+      },
     ]),
     HttpClientModule,
     BrowserAnimationsModule,

@@ -5,3 +5,4 @@ export * from './lib/reducers/index';
 export * from './lib/actions/index';
 export * from './lib/interface/index';
 export * from './lib/constants/index';
+export * from './lib/components/index';
